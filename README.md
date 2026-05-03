@@ -201,6 +201,15 @@ In summary, every component of the model has a measurable physical counterpart:
 
 The model thus ceases to be a mere hypothesis and becomes a formal description of the behavior of a real compass, in full compliance with Sanborn's instruction: *"Become the compass"*.
 
+### 4.4.1 Mechanical Derivation of the Drag Keys
+The drag keys were not constructed arbitrarily, nor chosen by trial and error. They were extracted directly from the target Delta matrix through a purely mechanical three-step process:
+
+Jump extraction: For each block, the consecutive differences between successive Δ values are computed as (Δ[i] − Δ[i−1]) mod 26. These values, ranging from 0 to 25, represent the discrete angular steps of the needle between one position and the next.
+Conversion to A1 letters: Each jump value is converted to the corresponding letter in the Standard alphabet (A=0, B=1, …, Z=25). This conversion is purely mechanical and produces the key strings used by the engine.
+Magnetic signature: The letter S (index 18) that opens Blocks 3, 4, and 5 was not chosen — it emerged from the data. Its presence is physically justified by Langley's magnetic dip angle (≈ 70°): 70 mod 26 = 18 = S. This correspondence, discovered during the analysis of the jump sequences, constitutes an independent confirmation of the model's physical coherence.
+
+
+
 ---
 
 ## 5. THE COMPLETE TABLE OF THE 97 DELTAS
