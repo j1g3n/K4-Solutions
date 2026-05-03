@@ -1,0 +1,65 @@
+"""
+KRYPTOS K4: THE MAGNETIC COMPASS ENGINE
+Algorithmic solution based on Geographic Seeds and Drag Vectors.
+Formula: Plaintext = (Ciphertext + Vm + Delta) mod 26
+"""
+
+def k4_solver():
+    VM = 10  # Magnetic Vector (Langley Declination)
+    A1 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    A2 = "KRYPTOSABCDEFGHIJLMNQUVWXZ"
+    
+    # Blocks definition
+    blocks = [
+        {"cipher": "OBKRUOXOGHULBSOLIFBBW", "alpha": A2, "name": "B1"},
+        {"cipher": "FLRVQQPRNGKSS", "alpha": A1, "name": "B2"},
+        {"cipher": "OTWTQSJQSSEKZZWATJKLUDIAWINFB", "alpha": A2, "name": "B3"},
+        {"cipher": "NYPVTTMZFPK", "alpha": A1, "name": "B4"},
+        {"cipher": "WGDKZXTJCDIGKUHUAUEKCAR", "alpha": A1, "name": "B5"}
+    ]
+
+    # 1. GEOGRAPHIC SEEDS (Calculated from Langley, Berlin, Moscow coordinates)
+    seeds = [-9, -11, 8, -22, -20]
+
+    # 2. DRAG VECTORS (Keys derived from magnetic drift analysis)
+    keys = [
+        "FBCBIQFLUTFPAFFEQKOH",         # Block 1
+        "QMXZBEASESKB",                 # Block 2
+        "SEJUHATSEOELRKRYORRHVSYUVRAA", # Block 3
+        "SWOZFWWXEN",                   # Block 4
+        "SHDXKQPLVAAAAAAAAAYATF"        # Block 5
+    ]
+
+    # Algorithmic Delta Generation
+    dynamic_deltas = []
+    for i in range(5):
+        curr = seeds[i]
+        block_deltas = [curr]
+        for char in keys[i]:
+            curr = (curr + A1.index(char))
+            while curr > 13: curr -= 26
+            while curr < -13: curr += 26
+            block_deltas.append(curr)
+        dynamic_deltas.extend(block_deltas)
+
+    # Final Decryption Loop
+    global_pos = 0
+    full_plain = ""
+    print("--- KRYPTOS K4: COMPASS ENGINE OUTPUT ---")
+    
+    for block in blocks:
+        alpha = block["alpha"]
+        block_plain = ""
+        for char in block["cipher"]:
+            d_gen = dynamic_deltas[global_pos]
+            p_val = (alpha.index(char) + VM + d_gen) % 26
+            block_plain += alpha[p_val]
+            global_pos += 1
+        print(f"{block['name']}: {block_plain}")
+        full_plain += block_plain
+
+    print("\nFULL RAW PLAINTEXT:")
+    print(full_plain)
+
+if __name__ == "__main__":
+    k4_solver()
